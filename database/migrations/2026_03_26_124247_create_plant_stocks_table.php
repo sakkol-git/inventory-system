@@ -38,7 +38,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Performance Optimization
-            $table->index(['plant_species_id', 'plant_variety_id', 'plant_sample_id', 'status']);
+            $table->index(['plant_species_id', 'plant_variety_id', 'plant_sample_id', 'status'], 'plant_stocks_sample_idx');
         });
     }
 

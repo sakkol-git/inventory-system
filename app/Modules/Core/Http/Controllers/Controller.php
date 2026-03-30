@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Modules\Core\Http\Controllers;
 
 use  App\Modules\Core\Concerns\ApiResponse;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
