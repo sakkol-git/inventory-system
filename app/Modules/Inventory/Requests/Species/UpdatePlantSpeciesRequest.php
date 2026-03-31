@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Inventory\Requests\Species;
 
 use App\Modules\Core\Concerns\HasImageValidation;
-use App\Enums\PlantGrowthType;
+use App\Modules\Inventory\Enums\PlantGrowthType;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;

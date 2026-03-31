@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Inventory\Services;
 
-use App\Enums\TransactionAction;
+use App\Modules\Inventory\Enums\TransactionAction;
 use App\Modules\Inventory\Models\Transaction;
 use App\Modules\Core\Models\User;
 use Illuminate\Database\Eloquent\Model;

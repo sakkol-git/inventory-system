@@ -7,7 +7,7 @@ namespace App\Modules\Inventory\Models;
 use App\Modules\Core\Concerns\HasActivityLogging;
 use App\Modules\Core\Concerns\HasImageUpload;
 use App\Modules\Core\Concerns\HasTransactions;
-use App\Enums\PlantGrowthType;
+use App\Modules\Inventory\Enums\PlantGrowthType;
 use Database\Factories\PlantSpeciesFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

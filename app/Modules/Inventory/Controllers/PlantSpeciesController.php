@@ -56,7 +56,6 @@ class PlantSpeciesController extends Controller
             modelClass: PlantSpecies::class,
             data: $data,
             user: auth('api')->user(),
-            note: 'Plant species created',
         );
 
         return (new PlantSpeciesResource($species))
@@ -88,7 +87,6 @@ class PlantSpeciesController extends Controller
             instance: $plantSpecies,
             data: $data,
             user: auth('api')->user(),
-            note: 'Plant species updated',
         );
 
         return new PlantSpeciesResource($plantSpecies);
@@ -104,9 +102,10 @@ class PlantSpeciesController extends Controller
         $this->crudService->delete(
             instance: $plantSpecies,
             user: auth('api')->user(),
-            note: 'Plant species deleted',
         );
 
         return response()->json(['message' => 'Plant species deleted successfully.']);
     }
+
+
 }

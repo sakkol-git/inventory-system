@@ -2,12 +2,13 @@
 
 namespace App\Modules\Core\Concerns;
 
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use App\Modules\Inventory\Models\Transaction;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 trait HasTransactions
 {
-    public function transactions(): MorphToMany
+    public function transactions(): MorphMany
     {
-        return $this->morphToMany();
+        return $this->morphMany(Transaction::class, 'transactionable');
     }
 }

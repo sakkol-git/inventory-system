@@ -32,6 +32,7 @@ class User extends Authenticatable implements JWTSubject
         'password',
         'phone',
         'timezone',
+        'role',
     ];
 
     protected $hidden = [
@@ -75,10 +76,10 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(MaintenanceRecord::class, 'performed_by');
     }
 
-    public function documents(): HasMany
-    {
-        return $this->hasMany(UserDocument::class);
-    }
+    // public function documents(): HasMany
+    // {
+    //     return $this->hasMany(UserDocument::class);
+    // }
 
     public function achievements(): BelongsToMany
     {

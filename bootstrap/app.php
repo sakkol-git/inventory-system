@@ -118,4 +118,4 @@ return Application::configure(basePath: dirname(__DIR__))
                return response()->json($payload, $status);
            }
        });
-    })->create();
+})->create();

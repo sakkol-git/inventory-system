@@ -29,6 +29,7 @@ return new class extends Migration
             // Additional Info
             $table->string('description')->nullable();
             $table->string('image_url')->nullable();
+            $table->string('image_path')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -1,65 +1,52 @@
 <?php
 
-namespace App\Http\Controllers;
+declare(strict_types=1);
 
+namespace App\Modules\Inventory\Controllers;
+
+use App\Modules\Core\Http\Controllers\Controller;
+
+use App\Modules\Inventory\Resources\TransactionResource;
 use App\Modules\Inventory\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class TransactionController
+class TransactionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): AnonymousResourceCollection
     {
-        //
-    }
+        $this->authorize('viewAny', Transaction::class);
+        $query = Transaction::with(['user', 'transactionable'])
+            ->latest();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        if ($request->filled('type')) {
+            $query->forType($request->input('type'));
+        }
+        if ($request->filled('action')) {
+            $query->where('action', $request->input('action'));
+        }
+        if ($request->filled('user_id')) {
+            $query->where('user_id', $request->integer('user_id'));
+        }
+        if ($request->boolean('recent')) {
+            $query->recent();
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+        return TransactionResource::collection($query->paginate(15));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Transaction $transaction)
+    public function show(Transaction $transaction): TransactionResource
     {
-        //
-    }
+        $this->authorize('view', $transaction);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Transaction $transaction)
-    {
-        //
-    }
+        $transaction->load(['user', 'transactionable']);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Transaction $transaction)
-    {
-        //
+        return new TransactionResource($transaction);
     }
 }
