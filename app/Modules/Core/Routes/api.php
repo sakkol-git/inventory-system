@@ -10,11 +10,11 @@ use App\Modules\Core\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // ─── Authentication Routes (public) ─────────────────────────────────────────
-Route::prefix('auth')->group(function () {
-    Route::post('register', [AuthController::class, 'register'])->middleware('throttle:5,1');
-    Route::post('login', [AuthController::class, 'login'])->middleware('throttle:10,1');
+Route::prefix('auth')->group( function (){
+    Route::post('Register', [AuthController::class, 'register']);
+    Route::post('Login', [AuthController::class, 'login']);
 
-    Route::middleware('auth:api')->group(function () {
+    Route::middleware('auth:api')->group(function (){
         Route::get('profile', [AuthController::class, 'profile']);
         Route::post('logout', [AuthController::class, 'logout']);
         Route::post('refresh', [AuthController::class, 'refresh']);
