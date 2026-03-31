@@ -14,7 +14,7 @@ class UpdateUserRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->hasPermissionTo('users.edit', 'api');
+        return $this->user()->hasRole('admin', 'api') || $this->user()->hasPermissionTo('users.edit', 'api');
     }
 
     /** @return array<string, ValidationRule|array<mixed>|string> */

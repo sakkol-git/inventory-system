@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\Route;
 
 // ─── Authentication Routes (public) ─────────────────────────────────────────
 Route::prefix('auth')->group( function (){
-    Route::post('Register', [AuthController::class, 'register']);
-    Route::post('Login', [AuthController::class, 'login']);
+    Route::post('register', [AuthController::class, 'register']);
+    Route::post('login', [AuthController::class, 'login']);
 
     Route::middleware('auth:api')->group(function (){
         Route::get('profile', [AuthController::class, 'profile']);
@@ -22,7 +22,7 @@ Route::prefix('auth')->group( function (){
 });
 
 // // ─── All protected routes require authentication ─────────────────────────────
-// Route::middleware('auth:api')->group(function () {
+Route::middleware('auth:api')->group(function () {
 
 //     // ─── Global Search (UX-04) ───────────────────────────────────────────────
 //     Route::get('search', SearchController::class)->name('search');
@@ -41,11 +41,11 @@ Route::prefix('auth')->group( function (){
 //     Route::get('activity-logs/{id}', [ActivityLogController::class, 'show'])->name('activity-logs.show');
 
 //     // ─── User Management (admin only) ────────────────────────────────────────
-    Route::apiResource('users', UserController::class)->middleware('admin');
+      Route::apiResource('users', UserController::class)->middleware( 'admin');
 
 //     // ─── Role & Permission Management (admin only) ───────────────────────────
-//     Route::middleware('admin')->group(function () {
-//         Route::apiResource('roles', RoleController::class)->except(['create', 'edit']);
+      Route::middleware('admin')->group(function () {
+        Route::apiResource('roles', RoleController::class)->except(['create', 'edit']);
 
 //         Route::get('roles/{id}/permissions', [RoleController::class, 'permissions']);
 //         Route::post('roles/{id}/permissions', [RoleController::class, 'assignPermission']);
@@ -56,5 +56,5 @@ Route::prefix('auth')->group( function (){
 //         Route::delete('roles/{id}/users/{userId}', [RoleController::class, 'revokeFromUser']);
 
 //         Route::apiResource('permissions', PermissionController::class)->except(['create', 'edit']);
-//     });
-// });
+    });
+});

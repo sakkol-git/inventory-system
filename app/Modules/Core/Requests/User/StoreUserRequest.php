@@ -14,7 +14,7 @@ class StoreUserRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->hasPermissionTo('users.create', 'api');
+        return $this->user()->hasRole('admin', 'api') || $this->user()->hasPermissionTo('users.create', 'api');
     }
 
     /** @return array<string, ValidationRule|array<mixed>|string> */

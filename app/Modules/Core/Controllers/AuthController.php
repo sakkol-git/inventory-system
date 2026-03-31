@@ -67,6 +67,53 @@ class AuthController extends Controller
 
         return $this->respondWithToken($token, $user)->setStatusCode(201);
    }
+
+
+    // Login user and return token
+    public function login(LoginRequest $request): JsonResponse
+    {
+        $credentials = $request->validated();
+
+        // check if user exists and credentials are valid
+        if(!$token = $this->jwt()->attempt($credentials))
+            {
+                return response()->json(['error' => 'Invalid credentials'], 401);
+            }
+
+        $user = $this->jwt()->user();
+
+        return $this->respondWithToken($token, $user);
+
+    }
+
+
+    // Get authenticated user profile
+    public function profile(): JsonResponse
+    {
+        $user = $this->jwt()->user();
+
+        return response()->json(['data' => new UserResource($user)]);
+    }
+
+    // Logout user and invalidate token
+    public function logout(): JsonResponse
+    {
+        $this->jwt()->logout();
+
+        // Clear the token cookie
+        $cookie = cookie()->forget(config('jwt.cookie_key_name', 'token'));
+
+        return response()->json(['message' => 'Successfully logged out'])->withCookie($cookie);
+    }
+
+
+    // Refresh token
+    public function refresh(): JsonResponse
+    {
+        $user = $this->jwt()->user();
+
+        return $this->respondWithToken($this->jwt()->refresh(), $user);
+    }
 }
 
 
