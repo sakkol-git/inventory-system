@@ -1,56 +1,63 @@
 <?php
 
+
 declare(strict_types=1);
+
 
 namespace App\Modules\Inventory\Controllers;
 
+
 use App\Modules\Core\Http\Controllers\Controller;
+
 
 use App\Modules\Inventory\Requests\Species\StorePlantSpeciesRequest;
 use App\Modules\Inventory\Requests\Species\UpdatePlantSpeciesRequest;
 use App\Modules\Inventory\Resources\PlantSpeciesResource;
 use App\Modules\Inventory\Models\PlantSpecies;
 use App\Modules\Inventory\Services\InventoryCrudService;
-use App\Modules\Core\Services\ImageUploadService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
+
 class PlantSpeciesController extends Controller
 {
-    public function __construct(
-        private readonly InventoryCrudService $crudService,
-        private readonly ImageUploadService $imageService,
-    ) {}
+   public function __construct(
+       private readonly InventoryCrudService $crudService,
+   ) {}
 
-    /**
-     * Display a listing of the resource.
-     */
+
+
+    // Listing Plant Species
     public function index(Request $request): AnonymousResourceCollection
     {
         $this->authorize('viewAny', PlantSpecies::class);
-        $query = PlantSpecies::query();
 
-        if ($request->filled('search')) {
-            $query->search($request->input('search'));
-        }
+        $species = $this->crudService->listItems(
+            modelClass: PlantSpecies::class,
+            request: $request,
+            perPage: 10,
+            filterMap: ['family' => 'family'],
+        );
 
-        if ($request->filled('family')) {
-            $query->family($request->input('family'));
-        }
-
-        return PlantSpeciesResource::collection($query->paginate(10));
+        return PlantSpeciesResource::collection($species);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Showing a single Plant Species
+   public function show(PlantSpecies $plantSpecies): PlantSpeciesResource
+   {
+       $this->authorize('view', $plantSpecies);
+
+
+       return new PlantSpeciesResource($plantSpecies);
+   }
+
+    // Creating a new Plant Species
     public function store(StorePlantSpeciesRequest $request): JsonResponse
     {
         $this->authorize('create', PlantSpecies::class);
 
         $data = $request->validated();
-        $this->imageService->handleImageData($data, PlantSpecies::imageFolder());
 
         $species = $this->crudService->create(
             modelClass: PlantSpecies::class,
@@ -58,54 +65,41 @@ class PlantSpeciesController extends Controller
             user: auth('api')->user(),
         );
 
-        return (new PlantSpeciesResource($species))
-            ->response()
-            ->setStatusCode(201);
+        return response()->json(new PlantSpeciesResource($species), 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(PlantSpecies $plantSpecies): PlantSpeciesResource
-    {
-        $this->authorize('view', $plantSpecies);
-
-        return new PlantSpeciesResource($plantSpecies);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
+    // Updating a Plant Species
     public function update(UpdatePlantSpeciesRequest $request, PlantSpecies $plantSpecies): PlantSpeciesResource
     {
         $this->authorize('update', $plantSpecies);
 
         $data = $request->validated();
-        $this->imageService->handleImageData($data, PlantSpecies::imageFolder(), $plantSpecies);
 
-        $plantSpecies = $this->crudService->update(
+        $updatedSpecies = $this->crudService->update(
             instance: $plantSpecies,
             data: $data,
             user: auth('api')->user(),
         );
 
-        return new PlantSpeciesResource($plantSpecies);
+        return new PlantSpeciesResource($updatedSpecies);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(PlantSpecies $plantSpecies): JsonResponse
     {
         $this->authorize('delete', $plantSpecies);
 
+        // apply soft delete and log transaction
         $this->crudService->delete(
             instance: $plantSpecies,
             user: auth('api')->user(),
         );
-
-        return response()->json(['message' => 'Plant species deleted successfully.']);
+        return response()->json(['message' => 'Plant species deleted successfully']);
     }
 
 
 }
+
+
+
+
+

@@ -6,6 +6,7 @@ namespace App\Modules\Core\Services;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -23,6 +24,9 @@ use Illuminate\Support\Str;
 class ImageUploadService
 {
     private const DISK = 'public';
+
+    /** @var array<string, array<int, string>> */
+    private static array $columnsCache = [];
 
     /**
      * Handle image data coming from a validated request.
@@ -103,6 +107,56 @@ class ImageUploadService
     }
 
     /**
+     * Prepare a validated payload for persistence against a given model.
+     *
+     * - Normalizes image keys (`image`, `image_path`, `image_url`) based on table support.
+     * - Handles upload/url replacement logic when supported.
+     * - Filters unknown keys to avoid SQL column errors.
+     *
+     * @param array<string, mixed> $data
+     * @param class-string<Model>|Model $modelOrClass
+     * @return array<string, mixed>
+     */
+    public function prepareDataForPersistence(array $data, string|Model $modelOrClass, ?Model $existing = null): array
+    {
+        $model = $existing ?? (is_string($modelOrClass) ? new $modelOrClass() : $modelOrClass);
+        $columns = $this->getTableColumns($model);
+
+        $supportsImagePath = in_array('image_path', $columns, true);
+        $supportsImageUrl = in_array('image_url', $columns, true);
+
+        if (! $supportsImagePath) {
+            unset($data['image']);
+        }
+
+        if (method_exists($model, 'imageFolder') && ($supportsImagePath || $supportsImageUrl)) {
+            $this->handleImageData($data, $model::imageFolder(), $existing);
+        }
+
+        if (! $supportsImagePath) {
+            unset($data['image_path']);
+        }
+
+        if (! $supportsImageUrl) {
+            unset($data['image_url']);
+        }
+
+        return array_intersect_key($data, array_flip($columns));
+    }
+
+    /** @return array<int, string> */
+    private function getTableColumns(Model $model): array
+    {
+        $table = $model->getTable();
+
+        if (! isset(self::$columnsCache[$table])) {
+            self::$columnsCache[$table] = Schema::getColumnListing($table);
+        }
+
+        return self::$columnsCache[$table];
+    }
+
+    /**
      * Resolve the single public-facing image URL.
      *
      * Priority: uploaded file (image_path) > external URL (image_url) > null
@@ -110,7 +164,7 @@ class ImageUploadService
     public static function resolveImageUrl(?string $imagePath, ?string $imageUrl): ?string
     {
         if ($imagePath) {
-            return Storage::disk(self::DISK)->url($imagePath);
+            return Storage::url($imagePath);
         }
 
         return $imageUrl;

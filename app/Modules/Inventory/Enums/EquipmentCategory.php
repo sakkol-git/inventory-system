@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Modules\Inventory\Enums;
 
-enum DangerLevel: string
+enum EquipmentCategory: string
 {
-    case LOW = 'low';
-    case MEDIUM = 'medium';
-    case HIGH = 'high';
+    case MICROSCOPE = 'microscope';
+    case CENTRIFUGE = 'centrifuge';
+    case INCUBATOR = 'incubator';
+    case SPECTROPHOTOMETER = 'spectrophotometer';
+    case OTHER = 'other';
 }

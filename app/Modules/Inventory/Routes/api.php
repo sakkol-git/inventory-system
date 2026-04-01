@@ -4,7 +4,7 @@ use App\Modules\Inventory\Controllers\AchievementController;
 use App\Modules\Inventory\Controllers\BorrowRecordController;
 use App\Modules\Inventory\Controllers\ChemicalBatchController;
 use App\Modules\Inventory\Controllers\ChemicalController;
-use App\Modules\Inventory\Controllers\ChemicalUsageController;
+use App\Modules\Inventory\Controllers\ChemicalUsageLogController;
 use App\Modules\Inventory\Controllers\DashboardController;
 use App\Modules\Inventory\Controllers\EquipmentController;
 use App\Modules\Inventory\Controllers\MaintenanceRecordController;
@@ -36,24 +36,24 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('plant-species', PlantSpeciesController::class)
         ->parameters(['plant-species' => 'plantSpecies']);
 
-//     Route::apiResource('plant-varieties', PlantVarietyController::class)
-//         ->parameters(['plant-varieties' => 'plantVariety']);
+    Route::apiResource('plant-varieties', PlantVarietyController::class)
+        ->parameters(['plant-varieties' => 'plantVariety']);
 
-//     Route::apiResource('plant-samples', PlantSampleController::class)
-//         ->parameters(['plant-samples' => 'plantSample']);
+    Route::apiResource('plant-samples', PlantSampleController::class)
+        ->parameters(['plant-samples' => 'plantSample']);
 
-//     Route::apiResource('plant-stocks', PlantStockController::class)
-//         ->parameters(['plant-stocks' => 'plantStock']);
+    Route::apiResource('plant-stocks', PlantStockController::class)
+        ->parameters(['plant-stocks' => 'plantStock']);
 
 //     // ─── Chemical Module ─────────────────────────────────────────────────────
-//     Route::apiResource('chemicals', ChemicalController::class);
+    Route::apiResource('chemicals', ChemicalController::class);
 //     Route::apiResource('chemical-batches', ChemicalBatchController::class);
-//     Route::apiResource('chemical-usage-logs', ChemicalUsageController::class)
+//     Route::apiResource('chemical-usage-logs', ChemicalUsageLogController::class)
 //         ->only(['index', 'store', 'show'])
 //         ->parameters(['chemical-usage-logs' => 'chemicalUsageLog']);
 
 //     // ─── Equipment Module ────────────────────────────────────────────────────
-//     Route::apiResource('equipment', EquipmentController::class);
+    Route::apiResource('equipment', EquipmentController::class);
 //     Route::apiResource('maintenance-records', MaintenanceRecordController::class);
 
 //     // ─── Borrow Module ───────────────────────────────────────────────────────
@@ -72,8 +72,8 @@ Route::middleware('auth:api')->group(function () {
 //         ->only(['index', 'store', 'show']);
 
 //     // ─── Operations Module ───────────────────────────────────────────────────
-//     Route::apiResource('transactions', TransactionController::class)
-//         ->only(['index', 'show']);
+    Route::apiResource('transactions', TransactionController::class)
+        ->only(['index', 'show']);
 
 //     // ─── Achievements ────────────────────────────────────────────────────────
 //     Route::apiResource('achievements', AchievementController::class);

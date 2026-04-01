@@ -23,13 +23,11 @@ class TransactionService
         User $user,
         TransactionAction $action,
         ?float $quantity = null,
-        ?string $note = null,
     ): Transaction {
         return $item->transactions()->create([
             'user_id' => $user->id,
             'action' => $action,
             'quantity' => $quantity,
-            'note' => $note,
         ]);
     }
 }

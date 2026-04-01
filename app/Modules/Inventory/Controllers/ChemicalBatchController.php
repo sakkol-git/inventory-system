@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Modules\Inventory\Controllers;
 
 use App\Modules\Inventory\Models\ChemicalBatch;
 use Illuminate\Http\Request;
