@@ -2,6 +2,24 @@
 
 namespace App\Providers;
 
+use App\Modules\Core\Contracts\ICrudService;
+use App\Modules\Inventory\Models\Achievement;
+use App\Modules\Inventory\Models\Chemical;
+use App\Modules\Inventory\Models\Equipment;
+use App\Modules\Inventory\Models\PlantSample;
+use App\Modules\Inventory\Models\PlantSpecies;
+use App\Modules\Inventory\Models\PlantStock;
+use App\Modules\Inventory\Models\PlantVariety;
+use App\Modules\Inventory\Models\Transaction;
+use App\Modules\Inventory\Policies\AchievementPolicy;
+use App\Modules\Inventory\Policies\ChemicalPolicy;
+use App\Modules\Inventory\Policies\EquipmentPolicy;
+use App\Modules\Inventory\Policies\PlantSamplePolicy;
+use App\Modules\Inventory\Policies\PlantSpeciesPolicy;
+use App\Modules\Inventory\Policies\PlantStockPolicy;
+use App\Modules\Inventory\Policies\PlantVarietyPolicy;
+use App\Modules\Inventory\Policies\TransactionPolicy;
+use App\Modules\Core\Services\Crud\CrudService;
 use App\Modules\Core\Models\User;
 use App\Modules\Core\Policies\UserPolicy;
 use Carbon\CarbonImmutable;
@@ -20,7 +38,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        if (! class_exists('App\\Modules\\Core\\Services\\ImageUploadService')
+            && class_exists('App\\Modules\\Core\\Services\\ImageUpload\\ImageUploadService')) {
+            class_alias(
+                'App\\Modules\\Core\\Services\\ImageUpload\\ImageUploadService',
+                'App\\Modules\\Core\\Services\\ImageUploadService',
+            );
+        }
+
+        $this->app->bind(ICrudService::class, CrudService::class);
     }
 
     /**
@@ -42,6 +68,14 @@ class AppServiceProvider extends ServiceProvider
     {
         // Register model policies
         Gate::policy(User::class, UserPolicy::class);
+        Gate::policy(PlantSpecies::class, PlantSpeciesPolicy::class);
+        Gate::policy(PlantVariety::class, PlantVarietyPolicy::class);
+        Gate::policy(PlantSample::class, PlantSamplePolicy::class);
+        Gate::policy(PlantStock::class, PlantStockPolicy::class);
+        Gate::policy(Chemical::class, ChemicalPolicy::class);
+        Gate::policy(Equipment::class, EquipmentPolicy::class);
+        Gate::policy(Achievement::class, AchievementPolicy::class);
+        Gate::policy(Transaction::class, TransactionPolicy::class);
 
         // Super-admin bypass: users with the spatie 'admin' role can do anything.
         Gate::before(function ($user) {

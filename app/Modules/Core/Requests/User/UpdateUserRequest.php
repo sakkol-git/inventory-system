@@ -9,9 +9,12 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
+use App\Modules\Core\Concerns\HasImageValidation;
 
 class UpdateUserRequest extends FormRequest
 {
+    use HasImageValidation;
+
     public function authorize(): bool
     {
         return $this->user()->hasRole('admin', 'api') || $this->user()->hasPermissionTo('users.edit', 'api');
@@ -26,6 +29,7 @@ class UpdateUserRequest extends FormRequest
             'password' => ['sometimes', 'string', 'confirmed', Password::defaults()],
             'phone' => ['nullable', 'string', 'max:20'],
             'role' => ['sometimes', Rule::enum(UserRole::class)],
+            ...$this->imageRules(),
         ];
     }
 }

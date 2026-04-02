@@ -18,6 +18,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone,
             'role' => $this->role?->value,
+            'profile_image_url' => $this->profile_image_url,
             'permissions' => $this->whenLoaded('permissions', function() {
             return $this->getAllPermissions()->pluck('name');
            }),

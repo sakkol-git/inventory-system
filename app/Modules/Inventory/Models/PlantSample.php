@@ -7,6 +7,7 @@ use App\Modules\Inventory\Enums\SampleStatus;
 use App\Modules\Core\Concerns\EscapesSearchTerm;
 use App\Modules\Core\Concerns\HasActivityLogging;
 use App\Modules\Core\Concerns\HasImageUpload;
+use App\Modules\Core\Concerns\HasTransactions;
 use App\Modules\Core\Models\User;
 use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,7 +20,7 @@ use Illuminate\Database\Eloquent\Builder;
 class PlantSample extends Model
 {
     // traits
-    use EscapesSearchTerm, HasActivityLogging, HasFactory, HasImageUpload, HasAttributes, SoftDeletes;
+    use EscapesSearchTerm, HasActivityLogging, HasFactory, HasImageUpload, HasTransactions, HasAttributes, SoftDeletes;
 
 
     // table name

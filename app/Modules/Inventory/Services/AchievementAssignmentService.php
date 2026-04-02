@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Modules\Inventory\Services;
 
 use App\Modules\Core\Models\User;
+use App\Modules\Core\Contracts\ICrudService;
 use App\Modules\Inventory\Models\Achievement;
 use Illuminate\Support\Facades\DB;
 
 class AchievementAssignmentService
 {
     public function __construct(
-        private readonly InventoryCrudService $crudService,
+        private readonly ICrudService $crudService,
     ) {
     }
 

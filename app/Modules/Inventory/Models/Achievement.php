@@ -8,21 +8,24 @@ use Database\Factories\AchievementFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Modules\Core\Concerns\HasTransactions;
 use App\Modules\Core\Models\User;
 
 class Achievement extends Model
 {
     /** @use HasFactory<AchievementFactory> */
-    use HasFactory;
+    use HasFactory, HasTransactions;
 
     protected $table = 'achievements';
 
     protected $fillable = [
-        'name',
+        'achievement_name',
         'description',
         'criteria_type',
         'criteria_value',
         'icon',
+        'image_url',
+        'image_path',
     ];
 
     protected function casts(): array

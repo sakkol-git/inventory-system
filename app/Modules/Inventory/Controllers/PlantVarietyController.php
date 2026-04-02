@@ -7,7 +7,7 @@ use App\Modules\Core\Http\Controllers\Controller;
 use App\Modules\Inventory\Models\PlantVariety;
 use App\Modules\Inventory\Requests\Variety\StorePlantVarietyRequest;
 use App\Modules\Inventory\Requests\Variety\UpdatePlantVarietyRequest;
-use App\Modules\Inventory\Services\InventoryCrudService;
+use App\Modules\Core\Contracts\ICrudService;
 use App\Modules\Inventory\Resources\PlantVarietyResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -18,7 +18,7 @@ class PlantVarietyController extends Controller
 
     // Constructor with any necessary dependencies (e.g., services)
     public function __construct(
-        private readonly InventoryCrudService $crudService,
+        private readonly ICrudService $crudService,
     )
     {}
     /**
@@ -52,7 +52,7 @@ class PlantVarietyController extends Controller
         // Validated Request Data
         $data = $request->validated();
 
-        // Create the Plant Variety using the InventoryCrudService
+        // Create the Plant Variety using the CrudService
         $variety = $this->crudService->create(
             modelClass: PlantVariety::class,
             data: $data,
@@ -89,7 +89,7 @@ class PlantVarietyController extends Controller
         // Validated Request Data
         $data = $request->validated();
 
-        // Update the Plant Variety using the InventoryCrudService
+        // Update the Plant Variety using the CrudService
         $updatedVariety = $this->crudService->update(
             instance: $plantVariety,
             data: $data,
@@ -107,7 +107,7 @@ class PlantVarietyController extends Controller
         // Authorization check
         $this->authorize('delete', $plantVariety);
 
-        // Delete the Plant Variety using the InventoryCrudService
+        // Delete the Plant Variety using the CrudService
         $this->crudService->delete(
             instance: $plantVariety,
             user: auth('api')->user(),

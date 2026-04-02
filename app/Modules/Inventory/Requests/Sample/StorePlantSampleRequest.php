@@ -20,7 +20,7 @@ class StorePlantSampleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()?->hasPermissionTo('plants.create', 'api') ?? false;
+        return true; // Authorization is handled in the controller via policies
     }
 
     /**

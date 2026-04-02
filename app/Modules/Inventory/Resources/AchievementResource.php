@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Inventory\Resources;
 
-use App\Modules\Core\Services\ImageUploadService;
+use App\Modules\Core\Services\ImageUpload\ImageUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,7 +20,6 @@ class AchievementResource extends JsonResource
                 'type' => $this->criteria_type,
                 'value' => $this->criteria_value,
             ],
-            'icon' => $this->icon,
             'image' => ImageUploadService::resolveImageUrl($this->image_path, $this->image_url),
             'assigned_user_ids' => $this->whenLoaded('users', fn () => $this->users->pluck('id')->values()),
             'created_at' => $this->created_at?->toIso8601String(),

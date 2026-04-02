@@ -2,10 +2,12 @@
 
 namespace App\Modules\Core\Requests\Auth;
 
+use App\Modules\Core\Concerns\HasImageValidation;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterRequest extends FormRequest
 {
+    use HasImageValidation;
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -26,6 +28,7 @@ class RegisterRequest extends FormRequest
             'email' => 'required|string|email|max:255|unique:users',
             'password' => ['required', 'string', \Illuminate\Validation\Rules\Password::defaults(), 'confirmed'],
             'phone' => 'nullable|string|max:20',
+            ...$this->imageRules(),
         ];
     }
 }

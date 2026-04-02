@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Core\Concerns;
 
-use App\Modules\Core\Services\ImageUploadService;
+use App\Modules\Core\Services\ImageUpload\ImageUploadService;
 
 /**
  * HasImageUpload — mixin for Eloquent models that store images.

@@ -6,7 +6,7 @@ use App\Modules\Core\Http\Controllers\Controller;
 use App\Modules\Inventory\Models\PlantSample;
 use App\Modules\Inventory\Requests\Sample\StorePlantSampleRequest;
 use App\Modules\Inventory\Requests\Sample\UpdatePlantSampleRequest;
-use App\Modules\Inventory\Services\InventoryCrudService;
+use App\Modules\Core\Contracts\ICrudService;
 use Illuminate\Http\Request;
 use App\Modules\Inventory\Resources\PlantSampleResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -16,7 +16,7 @@ class PlantSampleController extends Controller
 {
 
     public function __construct(
-        private readonly InventoryCrudService $crudService,
+        private readonly ICrudService $crudService,
     )
     {}
     /**
@@ -51,7 +51,7 @@ class PlantSampleController extends Controller
         // Validated Request Data
         $data = $request->validated();
 
-        // Create the Plant Sample using the InventoryCrudService
+        // Create the Plant Sample using the CrudService
         $plantSample = $this->crudService->create(
             modelClass: PlantSample::class,
             data: $data,
@@ -85,7 +85,7 @@ class PlantSampleController extends Controller
         // Validated Request Data
         $data = $request->validated();
 
-        // update the Plant Sample using the InventoryCrudService
+        // update the Plant Sample using the CrudService
         $updatedSample = $this->crudService->update(
             instance: $plantSample,
             data: $data,

@@ -10,7 +10,7 @@ use App\Modules\Inventory\Requests\Stock\StorePlantStockRequest;
 use App\Modules\Inventory\Requests\Stock\UpdatePlantStockRequest;
 use App\Modules\Inventory\Resources\PlantStockResource;
 use App\Modules\Inventory\Models\PlantStock;
-use App\Modules\Inventory\Services\InventoryCrudService;
+use App\Modules\Core\Contracts\ICrudService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -18,7 +18,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 class PlantStockController extends Controller
 {
     public function __construct(
-        private readonly InventoryCrudService $crudService,
+        private readonly ICrudService $crudService,
     ) {}
 
     public function index(Request $request): AnonymousResourceCollection

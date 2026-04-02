@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Core\Services;
 
-
+use App\Modules\Core\Services\ImageUpload\ImageUploadService;
 use App\Modules\Core\Concerns\EscapesSearchTerm;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
@@ -15,6 +15,10 @@ use Illuminate\Database\Eloquent\Builder;
 class UserService
 {
     use EscapesSearchTerm;
+
+
+    public function __construct( private readonly ImageUploadService $imageService,)
+    {}
     /**
      * Create a new user and assign the matching Spatie role.
      * The `role` field in $data determines which Spatie role to assign.
@@ -22,6 +26,7 @@ class UserService
     public function create(array $data): User
     {
         return DB::transaction(function () use ($data){
+        $data = $this->imageService->prepareDataForPersistence($data, User::class);
            $rolename = $data['role'] ?? 'student';
             $user = User::create($data);
 
@@ -42,6 +47,7 @@ class UserService
     public function update(User $user, array $data): User
     {
         return DB::transaction(function () use ($user, $data) {
+            $data = $this->imageService->prepareDataForPersistence($data, $user, $user);
             $user->update($data);
 
             if (isset($data['role'])) {

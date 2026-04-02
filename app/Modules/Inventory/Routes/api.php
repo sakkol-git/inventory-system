@@ -76,11 +76,11 @@ Route::middleware('auth:api')->group(function () {
         ->only(['index', 'show']);
 
 //     // ─── Achievements ────────────────────────────────────────────────────────
-//     Route::apiResource('achievements', AchievementController::class);
-//     Route::post('achievements/{achievement}/assign/{user}', [AchievementController::class, 'assign'])
-//         ->name('achievements.assign');
-//     Route::delete('achievements/{achievement}/revoke/{user}', [AchievementController::class, 'revoke'])
-//         ->name('achievements.revoke');
+    Route::apiResource('achievements', AchievementController::class);
+    Route::post('achievements/{achievement}/assign/{user}', [AchievementController::class, 'assign'])
+        ->name('achievements.assign');
+    Route::delete('achievements/{achievement}/revoke/{user}', [AchievementController::class, 'revoke'])
+        ->name('achievements.revoke');
 
 //     // ─── User Documents ──────────────────────────────────────────────────────
 //     Route::apiResource('user-documents', UserDocumentController::class)

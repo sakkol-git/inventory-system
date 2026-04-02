@@ -17,7 +17,7 @@ class StoreAchievementRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()?->hasPermissionTo('achievements.create', 'api') ?? false;
+        return true; // Authorization is handled in the controller via policies
     }
 
     /**

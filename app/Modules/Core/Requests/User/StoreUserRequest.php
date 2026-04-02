@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Core\Requests\User;
 
 use App\Modules\Core\Enums\UserRole;
+use App\Modules\Core\Concerns\HasImageValidation;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -12,6 +13,9 @@ use Illuminate\Validation\Rules\Password;
 
 class StoreUserRequest extends FormRequest
 {
+    use HasImageValidation;
+
+
     public function authorize(): bool
     {
         return $this->user()->hasRole('admin', 'api') || $this->user()->hasPermissionTo('users.create', 'api');
@@ -26,6 +30,7 @@ class StoreUserRequest extends FormRequest
             'password' => ['required', 'string', 'confirmed', Password::defaults()],
             'phone' => ['nullable', 'string', 'max:20'],
             'role' => ['required', Rule::enum(UserRole::class)],
+            ...$this->imageRules(),
         ];
     }
 }

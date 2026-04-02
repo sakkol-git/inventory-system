@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Inventory\Resources;
 
-use App\Modules\Core\Services\ImageUploadService;
+use App\Modules\Core\Services\ImageUpload\ImageUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

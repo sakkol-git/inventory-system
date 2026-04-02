@@ -10,7 +10,7 @@ use App\Modules\Inventory\Requests\Equipment\StoreEquipmentRequest;
 use App\Modules\Inventory\Requests\Equipment\UpdateEquipmentRequest;
 use App\Modules\Inventory\Resources\EquipmentResource;
 use App\Modules\Inventory\Models\Equipment;
-use App\Modules\Inventory\Services\InventoryCrudService;
+use App\Modules\Core\Contracts\ICrudService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -18,7 +18,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 class EquipmentController extends Controller
 {
     public function __construct(
-        private readonly InventoryCrudService $crudService,
+        private readonly ICrudService $crudService,
     ) {}
 
     /**

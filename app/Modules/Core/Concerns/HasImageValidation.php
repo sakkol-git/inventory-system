@@ -23,6 +23,7 @@ trait HasImageValidation
         return [
             'image'     => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'image_url' => ['nullable', 'url', 'max:2048'],
+            'profile_image_url' => ['nullable', 'url', 'max:2048'],
         ];
     }
 }

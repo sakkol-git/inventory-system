@@ -20,7 +20,7 @@ class UpdatePlantSampleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()?->hasPermissionTo('plants.edit', 'api') ?? false;
+        return true; // Authorization is handled in the controller via policies
     }
 
     /**

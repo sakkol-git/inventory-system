@@ -17,7 +17,7 @@ class UpdateChemicalRequest extends FormRequest
 
     public function authorize(): bool
     {
-        return $this->user()?->hasPermissionTo('chemicals.edit', 'api') ?? false;
+        return true; // Authorization is handled in the controller via policies
     }
 
     /** @return array<string, ValidationRule|array<mixed>|string> */

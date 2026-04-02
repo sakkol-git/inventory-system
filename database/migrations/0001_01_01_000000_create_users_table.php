@@ -27,6 +27,9 @@ return new class extends Migration
 
             // Role Info
             $table->enum('role', ['admin', 'lab_manager', 'student'])->default('student');
+
+            // Profile Image
+            $table->string('profile_image_url')->nullable();
             $table->timestamps();
         });
     }

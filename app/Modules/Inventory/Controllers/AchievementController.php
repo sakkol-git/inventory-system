@@ -11,14 +11,14 @@ use App\Modules\Inventory\Requests\Achievement\UpdateAchievementRequest;
 use App\Modules\Inventory\Resources\AchievementResource;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Modules\Inventory\Services\AchievementAssignmentService;
-use App\Modules\Inventory\Services\InventoryCrudService;
+use App\Modules\Core\Contracts\ICrudService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AchievementController extends Controller
 {
     public function __construct(
-        private readonly InventoryCrudService $crudService,
+        private readonly ICrudService $crudService,
         private readonly AchievementAssignmentService $assignmentService,
     ) {
     }
